@@ -1,0 +1,8 @@
+{
+    "recommendations": [
+        "eamodio.gitlens",
+        "editorconfig.editorconfig",
+        "ms-vscode.csharp",
+        "robertohuertasm.vscode-icons"
+    ]
+}
