@@ -11,7 +11,7 @@
             },
             "internalConsoleOptions": "openOnSessionStart",
             "launchBrowser": {
-                "args": "http://localhost:5000",
+                "args": "http://localhost:5000/api/values",
                 "enabled": true,
                 "linux": {
                     "command": "xdg-open"
@@ -32,6 +32,44 @@
             },
             "stopAtEntry": false,
             "type": "coreclr"
+        },
+        {
+            "name": "Docker Launch",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "compose-for-debug",
+            "cwd": "/app",
+            "program": "/app/WebApp.dll",
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "development",
+                "REMOTE_DEBUGGING": "true"
+            },
+            "launchBrowser": {
+                "args": "http://localhost:5000/api/values",
+                "enabled": true,
+                "linux": {
+                    "command": "xdg-open"
+                },
+                "osx": {
+                    "command": "open"
+                },
+                "windows": {
+                    "args": "/C start http://localhost:5000/api/values",
+                    "command": "cmd.exe"
+                }
+            },
+            "sourceFileMap": {
+                "/app": "${workspaceRoot}"
+            },
+            "pipeTransport": {
+                "debuggerPath": "/vsdbg/vsdbg",
+                "pipeProgram": "docker",
+                "pipeCwd": "${workspaceRoot}",
+                "pipeArgs": [
+                    "exec -i edutacity-lovano"
+                ],
+                "quoteArgs": false
+            }
         },
     ]
 }

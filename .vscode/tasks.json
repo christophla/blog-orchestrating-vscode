@@ -10,6 +10,23 @@
                 "${workspaceFolder}/src/WebApp.csproj"
             ],
             "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "compose-for-debug",
+            "type": "shell",
+            "osx": {
+                "command": "bash ./scripts/project-tasks.sh composeForDebug"
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "dedicated"
+            },
+            "problemMatcher": [],
+            "windows": {
+                "command": ".\\scripts\\project-tasks.ps1 -ComposeForDebug"
+            }
         }
     ]
 }
