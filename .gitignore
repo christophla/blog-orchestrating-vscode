@@ -3,14 +3,6 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
-# Coverlet code coverage output
-.coverage
-coverage.info
-lcov.info
-
-# Swagger AutoRest Generation
-swagger.json
-
 # User-specific files
 *.suo
 *.user

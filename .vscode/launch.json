@@ -1,0 +1,37 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Local Launch",
+            "args": [],
+            "cwd": "${workspaceFolder}/src",
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "development",
+                "ASPNETCORE_URLS": "http://+:5000"
+            },
+            "internalConsoleOptions": "openOnSessionStart",
+            "launchBrowser": {
+                "args": "http://localhost:5000",
+                "enabled": true,
+                "linux": {
+                    "command": "xdg-open"
+                },
+                "osx": {
+                    "command": "open"
+                },
+                "windows": {
+                    "args": "/C start http://localhost:5000/api/values",
+                    "command": "cmd.exe"
+                }
+            },
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/src/bin/Debug/netcoreapp2.0/WebApp.dll",
+            "request": "launch",
+            "sourceFileMap": {
+                "/src": "${workspaceFolder}/src"
+            },
+            "stopAtEntry": false,
+            "type": "coreclr"
+        },
+    ]
+}
