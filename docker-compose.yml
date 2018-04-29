@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+
+  vscode-orchestration-app:
+    container_name: vscode-orchestration-app
+    image: vscode-orchestration-app
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=container
+      - REMOTE_DEBUGGING=${REMOTE_DEBUGGING}
+    ports:
+      - "5000:80"
+    networks:
+      - dev-network
+    tty: true
+    stdin_open: true
+
+networks:
+  dev-network:
+    driver: bridge
