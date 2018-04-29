@@ -93,8 +93,9 @@ showUsage () {
     echo -e "    Orchestrates various jobs for the project"
     echo -e ""
     echo -e "Commands:"
-    echo -e "    compose: Runs docker-compose."
     echo -e "    clean: Removes the images and kills all containers based on that image."
+    echo -e "    compose: Runs docker-compose."
+    echo -e "    composeForDebug: Builds the image and runs docker-compose."
     echo -e ""
     echo -e "Environments:"
     echo -e "    development: Default environment."
@@ -118,6 +119,9 @@ else
     case "$1" in
         "clean")
             clean
+            ;;
+        "compose")
+            compose
             ;;
         "composeForDebug")
             export REMOTE_DEBUGGING="enabled"

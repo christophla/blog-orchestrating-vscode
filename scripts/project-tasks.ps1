@@ -5,10 +5,12 @@
 	Removes the image and kills all containers based on that image.
 .PARAMETER Compose
 	Builds and runs a Docker image.
+.PARAMETER ComposeForDebug
+	Builds and debugs a Docker image.
 .PARAMETER Environment
 	The environment to compose, defaults to development (docker-compose.yml)
 .EXAMPLE
-	C:\PS> .\project-tasks.ps1 -Build -Environment Debug -Quiet 
+	C:\PS> .\project-tasks.ps1 -Compose -Environment Integration 
 #>
 
 # #############################################################################
@@ -18,6 +20,7 @@
 Param(
     [switch]$Clean,
     [switch]$Compose,
+    [switch]$ComposeForDebug,
     [ValidateNotNullOrEmpty()]
     [String]$Environment = "development"
 )
@@ -94,6 +97,9 @@ Function Compose () {
 #
 If ($Clean) {
     CleanAll
+}
+ElseIf ($Compose) {
+    Compose
 }
 ElseIf ($ComposeForDebug) {
     $env:REMOTE_DEBUGGING = "enabled"
