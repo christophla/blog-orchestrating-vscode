@@ -1,0 +1,26 @@
+{
+  "name": "vscode-orchestration",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/christophla/VSCode-Orchestration.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/christophla/VSCode-Orchestration/issues"
+  },
+  "homepage": "https://github.com/christophla/VSCode-Orchestration#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-lcov-to-html": "^2.0.0"
+  }
+}

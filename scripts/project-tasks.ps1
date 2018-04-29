@@ -112,9 +112,29 @@ Function UnitTests () {
         Write-Host ""
         Write-Host "Found tests in: $_" -ForegroundColor "Blue"
         Set-Location $_.FullName       
-        dotnet test 
+        dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=lcov
+
+        # replace all occurances of 'c:\' with unix-like '\' (gulp html report bug)
+        (Get-Content "coverage.info") | 
+            Foreach-Object {$_ -replace 'SF:C:','SF:'}  | 
+                Out-File "coverage.info" -Encoding utf8
+
         Set-Location ..
     }
+
+    Set-Location $WORKING_DIR
+
+    Write-Host "++++++++++++++++++++++++++++++++++++++++++++++++" -ForegroundColor "Yellow"
+    Write-Host "+ Generating code-coverage report               " -ForegroundColor "Yellow"
+    Write-Host "++++++++++++++++++++++++++++++++++++++++++++++++" -ForegroundColor "Yellow"
+
+    gulp generate-coverage-report
+
+    Write-Host "++++++++++++++++++++++++++++++++++++++++++++++++" -ForegroundColor "Green"
+    Write-Host "+ Report generated at:                          " -ForegroundColor "Green"
+    Write-Host "+                                               " -ForegroundColor "Green"
+    Write-Host "+ ${ROOT_DIR}/.coverage/index.html              " -ForegroundColor "Green"
+    Write-Host "++++++++++++++++++++++++++++++++++++++++++++++++" -ForegroundColor "Green"
 
     Set-Location $WORKING_DIR
 }
