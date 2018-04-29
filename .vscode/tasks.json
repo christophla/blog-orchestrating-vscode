@@ -12,6 +12,23 @@
             "problemMatcher": "$msCompile"
         },
         {
+            "label": "compose",
+            "type": "shell",
+            "osx": {
+                "command": "bash ./scripts/project-tasks.sh compose Debug"
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "dedicated"
+            },
+            "problemMatcher": [],
+            "windows": {
+                "command": ".\\scripts\\project-tasks.ps1 -Compose"
+            }
+        },
+        {
             "label": "compose-for-debug",
             "type": "shell",
             "osx": {
