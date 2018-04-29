@@ -9,6 +9,8 @@
 	Builds and debugs a Docker image.
 .PARAMETER Environment
 	The environment to compose, defaults to development (docker-compose.yml)
+.PARAMETER UnitTests
+	Builds the image and runs the unit tests.
 .EXAMPLE
 	C:\PS> .\project-tasks.ps1 -Compose -Environment Integration 
 #>
@@ -21,6 +23,7 @@ Param(
     [switch]$Clean,
     [switch]$Compose,
     [switch]$ComposeForDebug,
+    [switch]$UnitTests,
     [ValidateNotNullOrEmpty()]
     [String]$Environment = "development"
 )
@@ -30,7 +33,7 @@ Param(
 # Settings
 #
 $Environment = $Environment.ToLowerInvariant()
-
+$WORKING_DIR = (Get-Item -Path ".\" -Verbose).FullName
 
 # #############################################################################
 # Kills all running containers of an image
@@ -93,6 +96,30 @@ Function Compose () {
 
 
 # #############################################################################
+# Runs the unit tests
+#
+Function UnitTests () {
+
+    Write-Host "++++++++++++++++++++++++++++++++++++++++++++++++" -ForegroundColor "Green"
+    Write-Host "+ Running unit tests                            " -ForegroundColor "Green"
+    Write-Host "++++++++++++++++++++++++++++++++++++++++++++++++" -ForegroundColor "Green"
+
+    Set-Location test
+
+    Get-ChildItem -Directory -Filter "*UnitTests*" |
+        ForEach-Object {
+        
+        Write-Host ""
+        Write-Host "Found tests in: $_" -ForegroundColor "Blue"
+        Set-Location $_.FullName       
+        dotnet test 
+        Set-Location ..
+    }
+
+    Set-Location $WORKING_DIR
+}
+
+# #############################################################################
 # Switch arguments
 #
 If ($Clean) {
@@ -104,6 +131,9 @@ ElseIf ($Compose) {
 ElseIf ($ComposeForDebug) {
     $env:REMOTE_DEBUGGING = "enabled"
     Compose
+}
+ElseIf ($UnitTests) {
+    UnitTests
 }
 
 
