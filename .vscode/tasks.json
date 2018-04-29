@@ -15,7 +15,7 @@
             "label": "compose",
             "type": "shell",
             "osx": {
-                "command": "bash ./scripts/project-tasks.sh compose Debug"
+                "command": "bash ./scripts/project-tasks.sh compose"
             },
             "presentation": {
                 "echo": true,
