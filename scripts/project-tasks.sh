@@ -84,6 +84,33 @@ compose () {
 
 
 # #############################################################################
+# Runs the unit tests.
+#
+unitTests () {
+
+    echo -e "${GREEN}"
+    echo -e "++++++++++++++++++++++++++++++++++++++++++++++++"
+    echo -e "+ Running unit tests                            "
+    echo -e "++++++++++++++++++++++++++++++++++++++++++++++++"
+    echo -e "${RESTORE}"
+
+    for dir in test/*UnitTests*/ ; do
+        [ -e "$dir" ] || continue
+        dir=${dir%*/}
+        echo -e "Found tests in: test/${dir##*/}"
+        cd $dir
+        dotnet test 
+        rtn=$?
+        if [ "$rtn" != "0" ]; then
+            echo -e "${RED}An error occurred${RESTORE}"
+            exit $rtn
+        fi
+    done
+
+}
+
+
+# #############################################################################
 # Shows the usage for the script
 #
 showUsage () {
@@ -96,6 +123,7 @@ showUsage () {
     echo -e "    clean: Removes the images and kills all containers based on that image."
     echo -e "    compose: Runs docker-compose."
     echo -e "    composeForDebug: Builds the image and runs docker-compose."
+    echo -e "    unitTests: Runs all unit test projects with *UnitTests* in the project name."
     echo -e ""
     echo -e "Environments:"
     echo -e "    development: Default environment."
@@ -126,6 +154,9 @@ else
         "composeForDebug")
             export REMOTE_DEBUGGING="enabled"
             compose
+            ;;
+        "unitTests")
+            unitTests
             ;;
         *)
             showUsage
