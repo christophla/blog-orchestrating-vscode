@@ -24,8 +24,8 @@ ENV NUGET_XMLDOC_MODE skip
 
 # publish
 COPY . /app
-WORKDIR /app/src/WebApp
-RUN dotnet publish -f netcoreapp2.0 -r debian.8-x64 -c Debug -o /publish -v quiet
+WORKDIR /app/src
+RUN dotnet publish -f netcoreapp2.0 -r linux-x64 -c Debug -o /publish -v quiet
 
 
 # #############################################################################

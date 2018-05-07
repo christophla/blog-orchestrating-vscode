@@ -9,6 +9,8 @@
 	Builds and debugs a Docker image.
 .PARAMETER Environment
 	The environment to compose, defaults to development (docker-compose.yml)
+.PARAMETER NuGetPublish
+	Packs and deploys the NuGet projects (.nuspec)
 .PARAMETER UnitTests
 	Builds the image and runs the unit tests.
 .EXAMPLE
@@ -20,10 +22,11 @@
 #
 [CmdletBinding(PositionalBinding = $false)]
 Param(
-    [switch]$Clean,
-    [switch]$Compose,
-    [switch]$ComposeForDebug,
-    [switch]$UnitTests,
+    [Switch]$Clean,
+    [Switch]$Compose,
+    [Switch]$ComposeForDebug,
+    [Switch]$NuGetPublish,
+    [Switch]$UnitTests,
     [ValidateNotNullOrEmpty()]
     [String]$Environment = "development"
 )
@@ -33,6 +36,9 @@ Param(
 # Settings
 #
 $Environment = $Environment.ToLowerInvariant()
+$NugetFeedUri="https://www.myget.org/F/**ACCOUNT_NAME**/api/v2"
+$NugetKey = $env:NUGET_KEY
+$NugetVersion = "1.0.0"
 $WORKING_DIR = (Get-Item -Path ".\" -Verbose).FullName
 
 # #############################################################################
@@ -94,6 +100,42 @@ Function Compose () {
     }
 }
 
+
+# #############################################################################
+# Deploys nuget packages to myget feed
+#
+Function NuGetPublish () {
+
+    Write-Host "++++++++++++++++++++++++++++++++++++++++++++++++" -ForegroundColor "Green"
+    Write-Host "+ Deploying nuget packages to myget feed        " -ForegroundColor "Green"
+    Write-Host "++++++++++++++++++++++++++++++++++++++++++++++++" -ForegroundColor "Green"
+
+    Set-Location src
+
+    Get-ChildItem -Filter "*.nuspec" -Recurse -Depth 1 |
+        ForEach-Object {
+
+        $packageName = $_.BaseName
+        Set-Location $_.BaseName
+
+        dotnet pack `
+            -c $Environment `
+            --include-source `
+            --include-symbols
+
+        Write-Host "Publishing: $packageName.$NugetVersion" -ForegroundColor "Yellow"
+
+        Invoke-WebRequest `
+            -uri $NugetFeedUri `
+            -InFile "bin/$Environment/$packageName.$NugetVersion.nupkg" `
+            -Headers @{"X-nuget-ApiKey" = "$NugetKey"} `
+            -Method "PUT" `
+            -ContentType "multipart/form-data"
+
+        Set-Location ..
+    }
+
+}
 
 # #############################################################################
 # Runs the unit tests
