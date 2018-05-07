@@ -47,6 +47,12 @@ clean() {
         docker rmi -f $danglingImages
         fi
 
+        rtn=$?
+        if [ "$rtn" != "0" ]; then
+            echo -e "${RED}An error occurred${RESTORE}"
+            exit $rtn
+        fi
+
         echo -en "${YELLOW}Removed docker images${RESTORE}\n"
     fi
 }
@@ -82,6 +88,13 @@ compose () {
         echo -e "${YELLOW}Creating the container...${RESTORE}\n"
         docker-compose -f $composeFileName kill
         docker-compose -f $composeFileName up -d
+
+    fi
+
+    rtn=$?
+    if [ "$rtn" != "0" ]; then
+        echo -e "${RED}An error occurred${RESTORE}"
+        exit $rtn
     fi
 }
 
@@ -135,10 +148,15 @@ nugetPublish () {
             $nugetFeedUri \
             --upload-file bin/$buildEnvironment/${packageName}.$nugetVersion.nupkg
 
-
+            rtn=$?
+            if [ "$rtn" != "0" ]; then
+                echo -e "${RED}An error occurred${RESTORE}"
+                exit $rtn
+            fi
+            
             echo -e "${GREEN}"
             echo -e "++++++++++++++++++++++++++++++++++++++++++++++++"
-            echo -e "Uploaded nuspec for ${packageName}                  "
+            echo -e "Uploaded nuspec for ${packageName}              "
             echo -e "++++++++++++++++++++++++++++++++++++++++++++++++"
             echo -e "${RESTORE}"
 
@@ -214,6 +232,11 @@ else
     ENVIRONMENT=$(echo -e $2 | tr "[:upper:]" "[:lower:]")
 
     case "$1" in
+        "ci")
+            compose
+            nugetPublish
+            unitTests
+            ;;
         "clean")
             clean
             ;;

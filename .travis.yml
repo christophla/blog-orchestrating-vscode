@@ -1,0 +1,12 @@
+language: csharp
+solution: WebApp.sln
+mono: none
+dotnet: 2.1.101
+script:
+  - chmod +x ./scripts/project-tasks.sh
+  - ./scripts/project-tasks.sh compose
+  - ./scripts/project-tasks.sh unitTests
+  - ./scripts/project-tasks.sh nugetPublish
+sudo: required
+services:
+  - docker
