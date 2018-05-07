@@ -1,0 +1,5 @@
+branches:
+    only:
+        - part-8-ci-builds
+language: csharp
+solution: WebApp.sln
