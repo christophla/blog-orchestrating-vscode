@@ -1,0 +1,87 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/src/WebApp.csproj"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "compose",
+            "type": "shell",
+            "osx": {
+                "command": "bash ./scripts/project-tasks.sh compose"
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "dedicated"
+            },
+            "problemMatcher": [],
+            "windows": {
+                "command": ".\\scripts\\project-tasks.ps1 -Compose"
+            }
+        },
+        {
+            "label": "compose-for-debug",
+            "type": "shell",
+            "osx": {
+                "command": "bash ./scripts/project-tasks.sh composeForDebug"
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "dedicated"
+            },
+            "problemMatcher": [],
+            "windows": {
+                "command": ".\\scripts\\project-tasks.ps1 -ComposeForDebug"
+            }
+        },
+        {
+            "label": "nuget-publish",
+            "type": "shell",
+            "osx": {
+                "command": "bash ./scripts/project-tasks.sh nugetPublish"
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "dedicated"
+            },
+            "problemMatcher": [],
+            "windows": {
+                "command": ".\\scripts\\project-tasks.ps1 -NugetPublish"
+            }
+        },
+        {
+            "label": "unit-tests",
+            "type": "shell",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "osx": {
+                "command": "bash ./scripts/project-tasks.sh unitTests"
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "dedicated"
+            },
+            "problemMatcher": [],
+            "windows": {
+                "command": ".\\scripts\\project-tasks.ps1 -UnitTests"
+            }
+        }
+    ]
+}
