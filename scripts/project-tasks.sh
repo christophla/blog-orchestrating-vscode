@@ -99,7 +99,7 @@ unitTests () {
         dir=${dir%*/}
         echo -e "Found tests in: test/${dir##*/}"
         cd $dir
-        dotnet test 
+        dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=lcov
         rtn=$?
         if [ "$rtn" != "0" ]; then
             echo -e "${RED}An error occurred${RESTORE}"
